@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Autostart - Proxydetox</title>
+        <title>Cross compiling - Proxydetox</title>
 
 
         <!-- Custom HTML head -->
@@ -81,7 +81,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded affix "><a href="introduction.html">Introduction</a></li><li class="chapter-item expanded "><a href="installation.html"><strong aria-hidden="true">1.</strong> Installation</a></li><li class="chapter-item expanded "><a href="configuration.html"><strong aria-hidden="true">2.</strong> Configuration</a></li><li class="chapter-item expanded "><a href="usage.html"><strong aria-hidden="true">3.</strong> Usage</a></li><li class="chapter-item expanded "><a href="developers.html"><strong aria-hidden="true">4.</strong> For developers</a></li><li class="spacer"></li><li class="chapter-item expanded "><a href="build.html"><strong aria-hidden="true">5.</strong> Building Proxydetox</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="service.html" class="active"><strong aria-hidden="true">5.1.</strong> Autostart</a></li><li class="spacer"></li></ol></li><li class="chapter-item expanded "><a href="alternatives.html">Alternatives</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="introduction.html">Introduction</a></li><li class="chapter-item expanded "><a href="installation.html"><strong aria-hidden="true">1.</strong> Installation</a></li><li class="chapter-item expanded "><a href="configuration.html"><strong aria-hidden="true">2.</strong> Configuration</a></li><li class="chapter-item expanded "><a href="usage.html"><strong aria-hidden="true">3.</strong> Usage</a></li><li class="spacer"></li><li class="chapter-item expanded "><a href="build.html"><strong aria-hidden="true">4.</strong> Building Proxydetox</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="service.html"><strong aria-hidden="true">4.1.</strong> Auto start</a></li></ol></li><li class="chapter-item expanded "><a href="cross_compile.html" class="active"><strong aria-hidden="true">5.</strong> Cross compiling</a></li><li class="chapter-item expanded "><a href="developers.html"><strong aria-hidden="true">6.</strong> For developers</a></li><li class="spacer"></li><li class="chapter-item expanded affix "><a href="alternatives.html">Alternatives</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -142,33 +142,52 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="proxydetox-as-user-service"><a class="header" href="#proxydetox-as-user-service">Proxydetox as user service</a></h1>
-<p>Register Proxydetox as a user service such that it is automatically started by
-the system when the user is logged in.</p>
-<h2 id="automatically-start-proxydetox-with-a-user-session"><a class="header" href="#automatically-start-proxydetox-with-a-user-session">Automatically start Proxydetox with a user session</a></h2>
-<p>To automatically start <code>proxydetox</code> when an user session is active, we can
-register it with <code>systemd(8)</code> on Linux or <code>launchd(8)</code> on macOS.</p>
-<h3 id="linux"><a class="header" href="#linux">Linux</a></h3>
-<pre><code class="language-sh">cp pkg/proxydetox.service ~/.config/systemd/user/proxydetox.service
-systemctl --user daemon-reload
-systemctl --user enable proxydetox.service
-systemctl --user start proxydetox.service
+                        <h1 id="rust-toolchain"><a class="header" href="#rust-toolchain">Rust Toolchain</a></h1>
+<pre><code class="language-sh">rustup target add x86_64-pc-windows-gnu
+rustup toolchain install stable-x86_64-pc-windows-gnu
 </code></pre>
-<h3 id="macos"><a class="header" href="#macos">macOS</a></h3>
-<pre><code class="language-sh">cp pkg/com.github.kiron1.proxydetox.plist ~/Library/LaunchAgents/
-launchctl load -w -F ~/Library/LaunchAgents/com.github.kiron1.proxydetox.plist
-launchctl start com.github.kiron1.proxydetox
+<h1 id="c-toolchain"><a class="header" href="#c-toolchain">C Toolchain</a></h1>
+<p>We can use <a href="https://pkgsrc.joyent.com/install-on-osx/">pkgsrc</a> to
+install the the mingw GNU cross compiler:</p>
+<pre><code class="language-sh">sudo pkgin install mingw-w64-x86_64-gcc mingw-w64-x86_64-winpthreads-8.0.0
 </code></pre>
+<h1 id="buildrs-of-duktape-sys"><a class="header" href="#buildrs-of-duktape-sys">build.rs of duktape-sys</a></h1>
+<h2 id="bindgen"><a class="header" href="#bindgen">bindgen</a></h2>
+<p>Help <code>bindgen</code> to pick up the right header files:</p>
+<pre><code class="language-sh">export BINDGEN_EXTRA_CLANG_ARGS=&quot;--sysroot /opt/pkg/cross/x86_64-w64-mingw32/mingw/&quot;
+</code></pre>
+<h2 id="cc"><a class="header" href="#cc">cc</a></h2>
+<p>Help <code>cc</code> to find the right cross compiler:</p>
+<pre><code class="language-sh">export CC=/opt/pkg/cross/x86_64-w64-mingw32/bin/x86_64-w64-mingw32-gcc
+export CROSS_COMPILE=x86_64-w64-mingw32-gcc-
+</code></pre>
+<p>The <a href="https://github.com/alexcrichton/cc-rs/blob/master/src/lib.rs#L2347"><code>CROSS_COMPILE</code></a>
+variable is used in the <code>cc</code> crate.</p>
+<h1 id="cargo-configuration"><a class="header" href="#cargo-configuration">Cargo configuration</a></h1>
+<p>File <code>~/.cargo/config.toml</code>:</p>
+<pre><code class="language-toml">[target.x86_64-pc-windows-gnu]
+linker = &quot;/opt/pkg/cross/x86_64-w64-mingw32/bin/x86_64-w64-mingw32-gcc&quot;
+rustc-link-search = [&quot;/opt/pkg/cross/x86_64-w64-mingw32-winpthreads/mingw//lib/&quot;]
+</code></pre>
+<h1 id="cross-compile"><a class="header" href="#cross-compile">Cross compile</a></h1>
+<pre><code class="language-sh">export RUSTFLAGS=&quot;-L /opt/pkg/cross/x86_64-w64-mingw32-winpthreads/mingw/lib&quot;
+cargo build --target x86_64-pc-windows-gnu
+</code></pre>
+<h1 id="reference"><a class="header" href="#reference">Reference</a></h1>
+<ul>
+<li>https://doc.rust-lang.org/cargo/reference/config.html</li>
+<li>https://doc.rust-lang.org/cargo/reference/config.html#targettriplelinker</li>
+</ul>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="build.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="service.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next" href="alternatives.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next" href="developers.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -178,11 +197,11 @@ launchctl start com.github.kiron1.proxydetox
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="build.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="service.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next" href="alternatives.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next" href="developers.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>

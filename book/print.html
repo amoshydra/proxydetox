@@ -82,7 +82,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded affix "><a href="introduction.html">Introduction</a></li><li class="chapter-item expanded "><a href="installation.html"><strong aria-hidden="true">1.</strong> Installation</a></li><li class="chapter-item expanded "><a href="configuration.html"><strong aria-hidden="true">2.</strong> Configuration</a></li><li class="chapter-item expanded "><a href="usage.html"><strong aria-hidden="true">3.</strong> Usage</a></li><li class="chapter-item expanded "><a href="developers.html"><strong aria-hidden="true">4.</strong> For developers</a></li><li class="spacer"></li><li class="chapter-item expanded "><a href="build.html"><strong aria-hidden="true">5.</strong> Building Proxydetox</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="service.html"><strong aria-hidden="true">5.1.</strong> Autostart</a></li><li class="spacer"></li></ol></li><li class="chapter-item expanded "><a href="alternatives.html">Alternatives</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="introduction.html">Introduction</a></li><li class="chapter-item expanded "><a href="installation.html"><strong aria-hidden="true">1.</strong> Installation</a></li><li class="chapter-item expanded "><a href="configuration.html"><strong aria-hidden="true">2.</strong> Configuration</a></li><li class="chapter-item expanded "><a href="usage.html"><strong aria-hidden="true">3.</strong> Usage</a></li><li class="spacer"></li><li class="chapter-item expanded "><a href="build.html"><strong aria-hidden="true">4.</strong> Building Proxydetox</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="service.html"><strong aria-hidden="true">4.1.</strong> Auto start</a></li></ol></li><li class="chapter-item expanded "><a href="cross_compile.html"><strong aria-hidden="true">5.</strong> Cross compiling</a></li><li class="chapter-item expanded "><a href="developers.html"><strong aria-hidden="true">6.</strong> For developers</a></li><li class="spacer"></li><li class="chapter-item expanded affix "><a href="alternatives.html">Alternatives</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -269,40 +269,6 @@ export http_proxy https_proxy no_proxy
 </code></pre>
 <p>To make this changes persistent add them to <code>~/.profile</code>, <code>~/.bashrc</code>, or
 <code>~/.zshrc</code> depending on which shell you are using.</p>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="for-developers"><a class="header" href="#for-developers">For Developers</a></h1>
-<h2 id="components-in-this-repository"><a class="header" href="#components-in-this-repository">Components in this repository</a></h2>
-<h3 id="javascript-support"><a class="header" href="#javascript-support">JavaScript support</a></h3>
-<p>Since the PAC files are actual JavaScript code, Proxydetox needs to be able to
-run JavaScript code.</p>
-<ul>
-<li><a href="./duktape-sys/">duktape-sys</a> - FFI bindings for Rust of the
-<a href="https://duktape.org">duktape</a> JavaScript interpreter library written in C.</li>
-<li><a href="./duktape/">duktape</a> - Idiomatic Rust wrapper for the <code>duktape_sys</code> crate.
-(Just enough which is needed in this product context).</li>
-</ul>
-<h3 id="evaluation-of-pac-scripts"><a class="header" href="#evaluation-of-pac-scripts">Evaluation of PAC scripts</a></h3>
-<ul>
-<li><a href="./paclib/">paclib</a> - Functions needed to implement <code>FindProxyForURL</code> and wrap
-it in Rust.</li>
-<li><a href="./paceval/">paceval</a> - A utility to evaluate PAC files for a given URL and
-print the result.</li>
-</ul>
-<h3 id="http-proxy-code"><a class="header" href="#http-proxy-code">HTTP Proxy code</a></h3>
-<ul>
-<li><a href="./proxy_client/">proxy_client</a> - Supporting code to allow <a href="https://github.com/hyperium/hyper" title="A fast and correct HTTP implementation for Rust"><code>hyper</code></a> to
-utilize HTTP proxies.</li>
-<li><a href="./proxydetox/">proxydetox</a> - The actual Proxydetox software.</li>
-</ul>
-<h2 id="third-party-source-code-in-this-repository"><a class="header" href="#third-party-source-code-in-this-repository">Third party source code in this repository</a></h2>
-<ul>
-<li><a href="duktape-sys/src/duk_config.h">duk_config.h</a>,
-<a href="duktape-sys/src/duktape.h">duktape.h</a>, and
-<a href="duktape-sys/src/duktape.c">duktape.c</a> are from the
-<a href="https://duktape.org">Duktape project</a> and is under the MIT license.</li>
-<li><a href="paclib/src/pac_utils.js">pac_utils.js</a> is extracted from
-<a href="https://dxr.mozilla.org/mozilla-central/source/netwerk/base/ProxyAutoConfig.cpp">Mozillas ProxyAutoConfig.cpp</a>
-and is under the MPL2 license.</li>
-</ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="building-proxydetox"><a class="header" href="#building-proxydetox">Building Proxydetox</a></h1>
 <p>Proxydetox can be build using <a href="https://doc.rust-lang.org/cargo/" title="Cargo is the Rust package manager">cargo</a> or <a href="https://bazel.build" title="Build and test software of any size, quickly and reliably">Bazel</a>. The macOS
 application can only build via Bazel.</p>
@@ -371,13 +337,83 @@ systemctl --user enable proxydetox.service
 systemctl --user start proxydetox.service
 </code></pre>
 <h3 id="macos-1"><a class="header" href="#macos-1">macOS</a></h3>
-<p>Create a file <code>~/Library/LaunchAgents/com.github.kiron1.proxydetox.plist</code>, you can use
-<a href="https://github.com/kiron1/proxydetox/blob/main/pkg/macos/Library/LaunchAgents/com.github.kiron1.proxydetox.plist" title="proxydetox launchd plist file"><code>com.github.kiron1.proxydetox.plist</code></a> as template, but make sure to update the 
+<p>Create a file <code>~/Library/LaunchAgents/cc.colorto.proxydetox.plist</code>, you can use
+<a href="https://github.com/kiron1/proxydetox/blob/main/pkg/macos/cc.colorto.proxydetox.plist" title="proxydetox launchd plist file"><code>cc.colorto.proxydetox.plist</code></a> as template, but make sure to update the
 <code>Program</code> value with an <em>absolute</em> path.</p>
 <p>To finally enable the service, us the following commands:</p>
-<pre><code class="language-sh">launchctl load -w -F ~/Library/LaunchAgents/com.github.kiron1.proxydetox.plist
-launchctl start com.github.kiron1.proxydetox
+<pre><code class="language-sh">launchctl load -w -F ~/Library/LaunchAgents/cc.colorto.proxydetox.plist
+launchctl start cc.colorto.proxydetox
 </code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="rust-toolchain"><a class="header" href="#rust-toolchain">Rust Toolchain</a></h1>
+<pre><code class="language-sh">rustup target add x86_64-pc-windows-gnu
+rustup toolchain install stable-x86_64-pc-windows-gnu
+</code></pre>
+<h1 id="c-toolchain"><a class="header" href="#c-toolchain">C Toolchain</a></h1>
+<p>We can use <a href="https://pkgsrc.joyent.com/install-on-osx/">pkgsrc</a> to
+install the the mingw GNU cross compiler:</p>
+<pre><code class="language-sh">sudo pkgin install mingw-w64-x86_64-gcc mingw-w64-x86_64-winpthreads-8.0.0
+</code></pre>
+<h1 id="buildrs-of-duktape-sys"><a class="header" href="#buildrs-of-duktape-sys">build.rs of duktape-sys</a></h1>
+<h2 id="bindgen"><a class="header" href="#bindgen">bindgen</a></h2>
+<p>Help <code>bindgen</code> to pick up the right header files:</p>
+<pre><code class="language-sh">export BINDGEN_EXTRA_CLANG_ARGS=&quot;--sysroot /opt/pkg/cross/x86_64-w64-mingw32/mingw/&quot;
+</code></pre>
+<h2 id="cc"><a class="header" href="#cc">cc</a></h2>
+<p>Help <code>cc</code> to find the right cross compiler:</p>
+<pre><code class="language-sh">export CC=/opt/pkg/cross/x86_64-w64-mingw32/bin/x86_64-w64-mingw32-gcc
+export CROSS_COMPILE=x86_64-w64-mingw32-gcc-
+</code></pre>
+<p>The <a href="https://github.com/alexcrichton/cc-rs/blob/master/src/lib.rs#L2347"><code>CROSS_COMPILE</code></a>
+variable is used in the <code>cc</code> crate.</p>
+<h1 id="cargo-configuration"><a class="header" href="#cargo-configuration">Cargo configuration</a></h1>
+<p>File <code>~/.cargo/config.toml</code>:</p>
+<pre><code class="language-toml">[target.x86_64-pc-windows-gnu]
+linker = &quot;/opt/pkg/cross/x86_64-w64-mingw32/bin/x86_64-w64-mingw32-gcc&quot;
+rustc-link-search = [&quot;/opt/pkg/cross/x86_64-w64-mingw32-winpthreads/mingw//lib/&quot;]
+</code></pre>
+<h1 id="cross-compile"><a class="header" href="#cross-compile">Cross compile</a></h1>
+<pre><code class="language-sh">export RUSTFLAGS=&quot;-L /opt/pkg/cross/x86_64-w64-mingw32-winpthreads/mingw/lib&quot;
+cargo build --target x86_64-pc-windows-gnu
+</code></pre>
+<h1 id="reference"><a class="header" href="#reference">Reference</a></h1>
+<ul>
+<li>https://doc.rust-lang.org/cargo/reference/config.html</li>
+<li>https://doc.rust-lang.org/cargo/reference/config.html#targettriplelinker</li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="for-developers"><a class="header" href="#for-developers">For Developers</a></h1>
+<h2 id="components-in-this-repository"><a class="header" href="#components-in-this-repository">Components in this repository</a></h2>
+<h3 id="javascript-support"><a class="header" href="#javascript-support">JavaScript support</a></h3>
+<p>Since the PAC files are actual JavaScript code, Proxydetox needs to be able to
+run JavaScript code.</p>
+<ul>
+<li><a href="./duktape-sys/">duktape-sys</a> - FFI bindings for Rust of the
+<a href="https://duktape.org">duktape</a> JavaScript interpreter library written in C.</li>
+<li><a href="./duktape/">duktape</a> - Idiomatic Rust wrapper for the <code>duktape_sys</code> crate.
+(Just enough which is needed in this product context).</li>
+</ul>
+<h3 id="evaluation-of-pac-scripts"><a class="header" href="#evaluation-of-pac-scripts">Evaluation of PAC scripts</a></h3>
+<ul>
+<li><a href="./paclib/">paclib</a> - Functions needed to implement <code>FindProxyForURL</code> and wrap
+it in Rust.</li>
+<li><a href="./paceval/">paceval</a> - A utility to evaluate PAC files for a given URL and
+print the result.</li>
+</ul>
+<h3 id="http-proxy-code"><a class="header" href="#http-proxy-code">HTTP Proxy code</a></h3>
+<ul>
+<li><a href="./proxy_client/">proxy_client</a> - Supporting code to allow <a href="https://github.com/hyperium/hyper" title="A fast and correct HTTP implementation for Rust"><code>hyper</code></a> to
+utilize HTTP proxies.</li>
+<li><a href="./proxydetox/">proxydetox</a> - The actual Proxydetox software.</li>
+</ul>
+<h2 id="third-party-source-code-in-this-repository"><a class="header" href="#third-party-source-code-in-this-repository">Third party source code in this repository</a></h2>
+<ul>
+<li><a href="duktape-sys/src/duk_config.h">duk_config.h</a>,
+<a href="duktape-sys/src/duktape.h">duktape.h</a>, and
+<a href="duktape-sys/src/duktape.c">duktape.c</a> are from the
+<a href="https://duktape.org">Duktape project</a> and is under the MIT license.</li>
+<li><a href="paclib/src/pac_utils.js">pac_utils.js</a> is extracted from
+<a href="https://dxr.mozilla.org/mozilla-central/source/netwerk/base/ProxyAutoConfig.cpp">Mozillas ProxyAutoConfig.cpp</a>
+and is under the MPL2 license.</li>
+</ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="alternative-solutions"><a class="header" href="#alternative-solutions">Alternative solutions</a></h1>
 <ul>
 <li><a href="http://www.squid-cache.org" title="A caching proxy for the Web">Squid</a>: using the<a href="http://www.squid-cache.org/Doc/config/cache_peer/" title="Squid configuration directive cache_peer">cache_peer</a> directive and translating
