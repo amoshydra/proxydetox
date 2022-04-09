@@ -167,6 +167,23 @@
 </code></pre>
 </li>
 </ol>
+<h3 id="register-proxydetox-as-launchagent"><a class="header" href="#register-proxydetox-as-launchagent">Register proxydetox as LaunchAgent</a></h3>
+<p>The above steps installed a LaunchAgent for proxydetox named
+<code>/Library/LaunchAgents/cc.colorto.proxydetox.plist</code>.</p>
+<p><strong>Info</strong>: Since the <code>installer</code> command is run as the <code>root</code> user (to be able to write the files to
+the system directories) it cannot know for which user the launch agent needs to be enabled.</p>
+<p>The following steps need to be executed as the user who wants to use proxydetox (i.e. <em>not</em> as
+<em>root</em>).</p>
+<pre><code class="language-sh">  launchctl bootstrap &quot;gui/$(id -u)&quot; &quot;/Library/LaunchAgents/cc.colorto.proxydetox.plist&quot;
+  launchctl enable &quot;gui/$(id -u)/cc.colorto.proxydetox&quot;
+  launchctl print &quot;gui/$(id -u)/cc.colorto.proxydetox&quot;
+  launchctl kickstart -kp &quot;gui/$(id -u)/cc.colorto.proxydetox&quot;
+</code></pre>
+<p>To revert the above changes (i.e. you want to uninstall proxydetox), run the following commands:</p>
+<pre><code class="language-sh">  launchctl kill SIGTERM &quot;gui/$(id -u)/cc.colorto.proxydetox&quot;
+  launchctl disable &quot;gui/$(id -u)/cc.colorto.proxydetox&quot;
+  launchctl bootout &quot;gui/$(id -u)/cc.colorto.proxydetox&quot;
+</code></pre>
 <h2 id="windows"><a class="header" href="#windows">Windows</a></h2>
 <ol>
 <li>Download the <a href="https://github.com/kiron1/proxydetox/releases/latest" title="Proxydetox releases"><code>proxydetox-win64.zip</code></a> zip file.</li>
