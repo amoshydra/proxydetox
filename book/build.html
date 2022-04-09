@@ -165,28 +165,18 @@ enabled. This means, we would need to add <code>--features negotiate</code> to t
 <a href="https://en.wikipedia.org/wiki/Generic_Security_Services_Application_Program_Interface">Generic Security Services Application Program Interface (GSSAPI)</a> will
 be used. On Windows the <a href="https://en.wikipedia.org/wiki/Security_Support_Provider_Interface">Security Support Provider Interface</a> is used .</p>
 <h2 id="using-bazel"><a class="header" href="#using-bazel">Using Bazel</a></h2>
-<p>The easiest way to optiain Bazel, is by using Bazelisk. The remaining document
-assumes that eiter Bazel is installed and available via the <code>PATH</code> variable or
+<p>The easiest way to obtain Bazel, is by using Bazelisk. The remaining document
+assumes that either Bazel is installed and available via the <code>PATH</code> variable or
 Bazelisk is installed and the binary is named <code>bazel</code> and available via the
 <code>PATH</code> variable.</p>
-<p>Currently the Bazel setup has some quirks which requires some extra steps:</p>
-<ol>
-<li>Ensure the XCode command line tools are installed:</li>
-</ol>
+<p>For the Bazel setup to work, ensue the XCode command line tools are installed:</p>
 <pre><code class="language-sh">xcode-select --install
 </code></pre>
-<ol start="2">
-<li>Ensure the <code>duktape-sys</code> can find <code>TargetConditionals.h</code></li>
-</ol>
-<p>Currently we hardcode the necessary include path in
-<a href="./duktape-sys/BUILD"><code>duktape-sys/BUILD</code></a> this might need adjustment for your
-system. See
-<a href="https://github.com/bazelbuild/rules_rust/issues/899">bazelbuild/rules_rust #899</a></p>
-<h3 id="buliding-proxydetoxapp-macos-ui"><a class="header" href="#buliding-proxydetoxapp-macos-ui">Buliding ProxydetoxApp (macOS UI)</a></h3>
+<h3 id="building-proxydetoxapp-macos-ui"><a class="header" href="#building-proxydetoxapp-macos-ui">Building ProxydetoxApp (macOS UI)</a></h3>
 <pre><code class="language-sh">bazel build //macos/app:ProxydetoxApp
 </code></pre>
 <h3 id="enable-build-features-1"><a class="header" href="#enable-build-features-1">Enable build features</a></h3>
-<p>Append <code>--features=negotiate</code> to bazel to enable the negotiate feature:</p>
+<p>Append <code>--features=negotiate</code> to <code>bazel build</code> to enable the negotiate feature:</p>
 <pre><code class="language-sh">bazel build --features=negotiate //...
 </code></pre>
 <h2 id="autostart"><a class="header" href="#autostart">Autostart</a></h2>
