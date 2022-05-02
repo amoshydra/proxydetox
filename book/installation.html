@@ -159,6 +159,17 @@
 </code></pre>
 </li>
 </ol>
+<h3 id="register-proxydetox-as-systemd-user-daemon"><a class="header" href="#register-proxydetox-as-systemd-user-daemon">Register Proxydetox as systemd user daemon</a></h3>
+<p>The Debian package comes with systemd service file.</p>
+<p>Enabling Proxydetox and starting it, can be done with the following commands:</p>
+<pre><code class="language-sh">systemctl --user daemon-reload
+systemctl --user enable proxydetox
+systemctl --user start proxydetox
+</code></pre>
+<p>To disable and stop it please use:</p>
+<pre><code class="language-sh">systemctl --user stop proxydetox
+systemctl --user disable proxydetox
+</code></pre>
 <h2 id="macos"><a class="header" href="#macos">macOS</a></h2>
 <ol>
 <li>Download the <a href="https://github.com/kiron1/proxydetox/releases/latest" title="Proxydetox releases"><code>proxydetox-*-x86_64-apple-darwin.pkg</code></a> package.</li>

@@ -144,7 +144,7 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="introduction-to-proxydetox"><a class="header" href="#introduction-to-proxydetox">Introduction to Proxydetox</a></h1>
-<p>A small proxy to relive the pain of some corporate proxies.</p>
+<p>A small proxy to relieve the pain of some corporate proxies.</p>
 <p>Proxydetox can act as an intermediate HTTP proxy for your local applications and
 actual HTTP proxy. Proxydtox will talk to the actual corporate HTTP proxies on
 behalf of the actual application. Proxydetox will select the correct upstream
@@ -165,7 +165,7 @@ proxy by setting the environment variables <code>http_proxy</code>, and <code>ht
 <li>macOS</li>
 <li>Windows</li>
 </ul>
-<p>Prebuild versions of Proxydetox can be found on <a href="https://github.com/kiron1/proxydetox/releases" title="Proxydetox releases">the releaes page</a>.
+<p>Pre build versions of Proxydetox can be found on <a href="https://github.com/kiron1/proxydetox/releases" title="Proxydetox releases">the releases page</a>.
 Installation instructions are provided in the
 <a href="installation.html">installation section</a>.</p>
 <p><sup>1)</sup> Can be disabled via the <code>--no-default-features</code> flag during build
@@ -191,6 +191,17 @@ with the exceptions mentioned in &quot;Third party source code in this repositor
 </code></pre>
 </li>
 </ol>
+<h3 id="register-proxydetox-as-systemd-user-daemon"><a class="header" href="#register-proxydetox-as-systemd-user-daemon">Register Proxydetox as systemd user daemon</a></h3>
+<p>The Debian package comes with systemd service file.</p>
+<p>Enabling Proxydetox and starting it, can be done with the following commands:</p>
+<pre><code class="language-sh">systemctl --user daemon-reload
+systemctl --user enable proxydetox
+systemctl --user start proxydetox
+</code></pre>
+<p>To disable and stop it please use:</p>
+<pre><code class="language-sh">systemctl --user stop proxydetox
+systemctl --user disable proxydetox
+</code></pre>
 <h2 id="macos"><a class="header" href="#macos">macOS</a></h2>
 <ol>
 <li>Download the <a href="https://github.com/kiron1/proxydetox/releases/latest" title="Proxydetox releases"><code>proxydetox-*-x86_64-apple-darwin.pkg</code></a> package.</li>
@@ -240,8 +251,8 @@ used.</li>
 <p>The <code>.netrc</code> file is expected to be located in the <code>HOME</code> directory on all
 platforms. If needed, the location can be specified via the <code>--netrc-file</code> flag
 when invoking Proxydetox.</p>
-<p>For <code>proxydetoxrc</code> and <code>proxy.pac</code> at a user configurable location and system
-wide location is searched.</p>
+<p>The configuration files <code>proxydetoxrc</code> and <code>proxy.pac</code> are searched at user
+configurable location and system wide locations.</p>
 <p>For the different platforms, the user configurable location is as follows:</p>
 <ul>
 <li><code>~/.config/proxydetox/</code> (POSIX-compliant systems like <strong>BSD</strong> and <strong>Linux</strong>)</li>
@@ -257,8 +268,20 @@ wide location is searched.</p>
 </ul>
 <p>Windows:</p>
 <ul>
-<li><code>.</code> (the directory of the the executable)</li>
+<li><code>.</code> (the directory of the executable)</li>
 </ul>
+<h2 id="proxydetoxrc-file-format"><a class="header" href="#proxydetoxrc-file-format"><code>proxydetoxrc</code> file format</a></h2>
+<p>The <code>proxydetoxrc</code> file lists all options which are usually provided via the
+command line to <code>proxydetox</code>.</p>
+<h3 id="example"><a class="header" href="#example">Example</a></h3>
+<pre><code class="language-sh">proxydeox --negotiate --port 8080 --pac-file http://example.org/proxy.pac
+</code></pre>
+<p>Is equivalent with a <code>proxydetoxrc</code> file at one of the well known locations
+listed above with the following content:</p>
+<pre><code>--negotiate
+--port 8080
+--pac-file http://example.org/proxy.pac
+</code></pre>
 <h2 id="negotiate-authentication"><a class="header" href="#negotiate-authentication">Negotiate authentication</a></h2>
 <p>To enable the Negotiate authentication the <code>--negotiate</code> flag must be added when
 calling <code>proxydetox</code> or added to the <code>proxydetoxrc</code> configuration file.</p>
@@ -273,10 +296,21 @@ password ProxyPassword
 clear text on disk and the password is transferred unencrypted.</p>
 <h2 id="proxy-auto-configuration-pac-file"><a class="header" href="#proxy-auto-configuration-pac-file">Proxy Auto-Configuration (PAC) file</a></h2>
 <p>A copy of the PAC file <code>proxy.pac</code> must be places in on of directories searched
-by Proxydetox or specified via the <code>--pac-file</code> option. The PAC file is usually
+by Proxydetox or specified via the <code>--pac-file</code> option. The PAC file can be also
+a HTTP URL. The content will then be downloaded from the given location.</p>
+<p>The PAC file is usually
 maintained by the network administrators. The path (usually some http location
 in the intranet) can be retrieved from the settings of the pre-configured
 internet browser.</p>
+<h3 id="examples"><a class="header" href="#examples">Examples</a></h3>
+<pre><code>proxydetox --pac-file http://example.org/proxy.pac
+</code></pre>
+<pre><code>proxydetox --pac-file /tmp/test.pac
+</code></pre>
+<h2 id="configuration-options"><a class="header" href="#configuration-options">Configuration options</a></h2>
+<p>The full list of configuration options can be retrieved with:</p>
+<pre><code class="language-sh">proxydetox --help
+</code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="usage"><a class="header" href="#usage">Usage</a></h1>
 <p>With Proxydetox running, it is enough for most tools to set the <code>http_proxy</code> and
 <code>https_proxy</code> environment variables.</p>
@@ -432,12 +466,12 @@ and is under the MPL2 license.</li>
 </ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="alternative-solutions"><a class="header" href="#alternative-solutions">Alternative solutions</a></h1>
 <ul>
-<li><a href="http://www.squid-cache.org" title="A caching proxy for the Web">Squid</a>: using the<a href="http://www.squid-cache.org/Doc/config/cache_peer/" title="Squid configuration directive cache_peer">cache_peer</a> directive and translating
+<li><a href="http://www.squid-cache.org" title="A caching proxy for the Web">Squid</a>: using the <a href="http://www.squid-cache.org/Doc/config/cache_peer/" title="Squid configuration directive cache_peer">cache_peer</a> directive and translating
 the given PAC file into Squid ACLs.</li>
 <li><a href="https://github.com/zhuhaow/SpechtLite" title="A rule-based proxy for macOS">SpechtLite</a>: and translating the PAC file into the SpechtLite YAML
 configuration format (<strong>unmaintained</strong>).</li>
 <li><a href="https://github.com/genotrance/px" title="Px">Px</a>: A HTTP proxy server to automatically authenticate through an NTLM
-proxy (can handle PAC files).</li>
+proxy (can handle PAC files). Written in Python and focus more on Windows machines.</li>
 <li><a href="http://cntlm.sf.net/" title="Cntlm Authentication Proxy">Cntlm</a>: a NTLM / NTLMv2 authenticating HTTP/1.1 proxy. Cannot handle
 PAC files (<strong>unmaintained</strong>).</li>
 </ul>

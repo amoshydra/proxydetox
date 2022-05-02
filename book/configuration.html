@@ -157,8 +157,8 @@ used.</li>
 <p>The <code>.netrc</code> file is expected to be located in the <code>HOME</code> directory on all
 platforms. If needed, the location can be specified via the <code>--netrc-file</code> flag
 when invoking Proxydetox.</p>
-<p>For <code>proxydetoxrc</code> and <code>proxy.pac</code> at a user configurable location and system
-wide location is searched.</p>
+<p>The configuration files <code>proxydetoxrc</code> and <code>proxy.pac</code> are searched at user
+configurable location and system wide locations.</p>
 <p>For the different platforms, the user configurable location is as follows:</p>
 <ul>
 <li><code>~/.config/proxydetox/</code> (POSIX-compliant systems like <strong>BSD</strong> and <strong>Linux</strong>)</li>
@@ -174,8 +174,20 @@ wide location is searched.</p>
 </ul>
 <p>Windows:</p>
 <ul>
-<li><code>.</code> (the directory of the the executable)</li>
+<li><code>.</code> (the directory of the executable)</li>
 </ul>
+<h2 id="proxydetoxrc-file-format"><a class="header" href="#proxydetoxrc-file-format"><code>proxydetoxrc</code> file format</a></h2>
+<p>The <code>proxydetoxrc</code> file lists all options which are usually provided via the
+command line to <code>proxydetox</code>.</p>
+<h3 id="example"><a class="header" href="#example">Example</a></h3>
+<pre><code class="language-sh">proxydeox --negotiate --port 8080 --pac-file http://example.org/proxy.pac
+</code></pre>
+<p>Is equivalent with a <code>proxydetoxrc</code> file at one of the well known locations
+listed above with the following content:</p>
+<pre><code>--negotiate
+--port 8080
+--pac-file http://example.org/proxy.pac
+</code></pre>
 <h2 id="negotiate-authentication"><a class="header" href="#negotiate-authentication">Negotiate authentication</a></h2>
 <p>To enable the Negotiate authentication the <code>--negotiate</code> flag must be added when
 calling <code>proxydetox</code> or added to the <code>proxydetoxrc</code> configuration file.</p>
@@ -190,10 +202,21 @@ password ProxyPassword
 clear text on disk and the password is transferred unencrypted.</p>
 <h2 id="proxy-auto-configuration-pac-file"><a class="header" href="#proxy-auto-configuration-pac-file">Proxy Auto-Configuration (PAC) file</a></h2>
 <p>A copy of the PAC file <code>proxy.pac</code> must be places in on of directories searched
-by Proxydetox or specified via the <code>--pac-file</code> option. The PAC file is usually
+by Proxydetox or specified via the <code>--pac-file</code> option. The PAC file can be also
+a HTTP URL. The content will then be downloaded from the given location.</p>
+<p>The PAC file is usually
 maintained by the network administrators. The path (usually some http location
 in the intranet) can be retrieved from the settings of the pre-configured
 internet browser.</p>
+<h3 id="examples"><a class="header" href="#examples">Examples</a></h3>
+<pre><code>proxydetox --pac-file http://example.org/proxy.pac
+</code></pre>
+<pre><code>proxydetox --pac-file /tmp/test.pac
+</code></pre>
+<h2 id="configuration-options"><a class="header" href="#configuration-options">Configuration options</a></h2>
+<p>The full list of configuration options can be retrieved with:</p>
+<pre><code class="language-sh">proxydetox --help
+</code></pre>
 
                     </main>
 
