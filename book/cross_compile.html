@@ -153,18 +153,6 @@ rustup toolchain install stable-x86_64-pc-windows-gnu
 install the the mingw GNU cross compiler:</p>
 <pre><code class="language-sh">sudo pkgin install mingw-w64-x86_64-gcc mingw-w64-x86_64-winpthreads-8.0.0
 </code></pre>
-<h1 id="buildrs-of-duktape-sys"><a class="header" href="#buildrs-of-duktape-sys">build.rs of duktape-sys</a></h1>
-<h2 id="bindgen"><a class="header" href="#bindgen">bindgen</a></h2>
-<p>Help <code>bindgen</code> to pick up the right header files:</p>
-<pre><code class="language-sh">export BINDGEN_EXTRA_CLANG_ARGS=&quot;--sysroot /opt/pkg/cross/x86_64-w64-mingw32/mingw/&quot;
-</code></pre>
-<h2 id="cc"><a class="header" href="#cc">cc</a></h2>
-<p>Help <code>cc</code> to find the right cross compiler:</p>
-<pre><code class="language-sh">export CC=/opt/pkg/cross/x86_64-w64-mingw32/bin/x86_64-w64-mingw32-gcc
-export CROSS_COMPILE=x86_64-w64-mingw32-gcc-
-</code></pre>
-<p>The <a href="https://github.com/alexcrichton/cc-rs/blob/master/src/lib.rs#L2347"><code>CROSS_COMPILE</code></a>
-variable is used in the <code>cc</code> crate.</p>
 <h1 id="cargo-configuration"><a class="header" href="#cargo-configuration">Cargo configuration</a></h1>
 <p>File <code>~/.cargo/config.toml</code>:</p>
 <pre><code class="language-toml">[target.x86_64-pc-windows-gnu]

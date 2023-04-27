@@ -146,15 +146,6 @@
                     <main>
                         <h1 id="for-developers"><a class="header" href="#for-developers">For Developers</a></h1>
 <h2 id="components-in-this-repository"><a class="header" href="#components-in-this-repository">Components in this repository</a></h2>
-<h3 id="javascript-support"><a class="header" href="#javascript-support">JavaScript support</a></h3>
-<p>Since the PAC files are actual JavaScript code, Proxydetox needs to be able to
-run JavaScript code.</p>
-<ul>
-<li><a href="./duktape-sys/">duktape-sys</a> - FFI bindings for Rust of the
-<a href="https://duktape.org">duktape</a> JavaScript interpreter library written in C.</li>
-<li><a href="./duktape/">duktape</a> - Idiomatic Rust wrapper for the <code>duktape_sys</code> crate.
-(Just enough which is needed in this product context).</li>
-</ul>
 <h3 id="evaluation-of-pac-scripts"><a class="header" href="#evaluation-of-pac-scripts">Evaluation of PAC scripts</a></h3>
 <ul>
 <li><a href="./paclib/">paclib</a> - Functions needed to implement <code>FindProxyForURL</code> and wrap
@@ -170,10 +161,6 @@ utilize HTTP proxies.</li>
 </ul>
 <h2 id="third-party-source-code-in-this-repository"><a class="header" href="#third-party-source-code-in-this-repository">Third party source code in this repository</a></h2>
 <ul>
-<li><a href="duktape-sys/src/duk_config.h">duk_config.h</a>,
-<a href="duktape-sys/src/duktape.h">duktape.h</a>, and
-<a href="duktape-sys/src/duktape.c">duktape.c</a> are from the
-<a href="https://duktape.org">Duktape project</a> and is under the MIT license.</li>
 <li><a href="paclib/src/pac_utils.js">pac_utils.js</a> is extracted from
 <a href="https://dxr.mozilla.org/mozilla-central/source/netwerk/base/ProxyAutoConfig.cpp">Mozillas ProxyAutoConfig.cpp</a>
 and is under the MPL2 license.</li>
