@@ -2,14 +2,15 @@ workspace(name = "proxydetox")
 
 load("@//bazel:http.bzl", "versioned_http_archive")
 
+# https://github.com/bazelbuild/rules_apple/releases
 versioned_http_archive(
     name = "build_bazel_rules_apple",
-    sha256 = "43737f28a578d8d8d7ab7df2fb80225a6b23b9af9655fcdc66ae38eb2abcf2ed",
+    sha256 = "a6141240657093fa7ccc7ca1ee5a62408dd9996d1bf47bc2369b8b9faefb2698",
     urls = [
         "https://mirror.bazel.build/github.com/bazelbuild/rules_apple/releases/download/{version}/rules_apple.{version}.tar.gz",
         "https://github.com/bazelbuild/rules_apple/releases/download/{version}/rules_apple.{version}.tar.gz",
     ],
-    version = "2.0.0",
+    version = "2.3.0",
 )
 
 load(
@@ -40,14 +41,15 @@ load(
 
 apple_support_dependencies()
 
+# https://github.com/bazelbuild/rules_rust/releases
 versioned_http_archive(
     name = "rules_rust",
-    sha256 = "b4e622a36904b5dd2d2211e40008fc473421c8b51c9efca746ab2ecf11dca08e",
+    sha256 = "50272c39f20a3a3507cb56dcb5c3b348bda697a7d868708449e2fa6fb893444c",
     urls = [
         "https://mirror.bazel.build/github.com/bazelbuild/rules_rust/releases/download/{version}/rules_rust-v{version}.tar.gz",
         "https://github.com/bazelbuild/rules_rust/releases/download/{version}/rules_rust-v{version}.tar.gz",
     ],
-    version = "0.19.1",
+    version = "0.22.0",
 )
 
 load("@rules_rust//rust:repositories.bzl", "rust_repositories")
@@ -90,14 +92,15 @@ load("@rules_rust//bindgen:repositories.bzl", "rust_bindgen_repositories")
 
 rust_bindgen_repositories()
 
+# https://github.com/bazelbuild/rules_pkg/releases
 versioned_http_archive(
     name = "rules_pkg",
-    sha256 = "eea0f59c28a9241156a47d7a8e32db9122f3d50b505fae0f33de6ce4d9b61834",
+    sha256 = "8f9ee2dc10c1ae514ee599a8b42ed99fa262b757058f65ad3c384289ff70c4b8",
     urls = [
         "https://mirror.bazel.build/github.com/bazelbuild/rules_pkg/releases/download/{version}/rules_pkg-{version}.tar.gz",
         "https://github.com/bazelbuild/rules_pkg/releases/download/{version}/rules_pkg-{version}.tar.gz",
     ],
-    version = "0.8.1",
+    version = "0.9.1",
 )
 
 load("@rules_pkg//:deps.bzl", "rules_pkg_dependencies")
