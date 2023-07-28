@@ -2,6 +2,23 @@
 
 set -eu
 
+prefix=version=
+  while getopts "r" o; do
+    case "${o}" in
+    r)
+      prefix=
+      ;;
+    *)
+      echo "fatal error: invalid arguments"
+      exit 1
+      ;;
+    esac
+  done
+shift $((OPTIND - 1))
+
 query=$(printf '.packages[] | {name, version} | select(.name == "%s") | .version' "${1:-proxydetox}")
+echo q=$query
+which cargo
 version=$(cargo metadata --format-version 1 --no-deps --offline --quiet | jq -r "${query}")
-echo "version=${version}" >> "${GITHUB_OUTPUT:-/dev/stdout}"
+echo v=$version
+echo "${prefix}${version}" >> "${GITHUB_OUTPUT:-/dev/stdout}"
